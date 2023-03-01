@@ -1,5 +1,5 @@
 import intialProducts from "./api/products.json";
-import { addToCart } from "./actions";
+import { addToCart, checkOut } from "./actions";
 import { getState, subscribe } from "./store";
 
 import "./index.css";
@@ -9,6 +9,13 @@ subscribe(() => {
 
   console.log(getState().products);
   const cart = document.getElementById("cart");
+
+  const itemsInCart = cartProducts.filter((item) => item.inCart === 0);
+
+  if (itemsInCart.length === intialProducts.length) {
+    cart.innerHTML = "";
+  }
+
 
   cartProducts.forEach((product) => {
     if (product.inCart !== 0) {
@@ -60,4 +67,13 @@ document
 
 function handleButtonClicked(event) {
   addToCart(event.target.id);
+}
+
+document
+  .getElementById("checkout")
+  .addEventListener("click", handleButtonClickedCheckOut);
+
+
+function handleButtonClickedCheckOut() {
+  checkOut();
 }
